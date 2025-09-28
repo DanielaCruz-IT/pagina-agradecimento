@@ -15,6 +15,7 @@
       align-items: center;
       min-height: 100vh;
       text-align: center;
+      padding: 16px;
     }
 
     .container {
@@ -22,12 +23,13 @@
       border-radius: 14px;
       padding: 48px 32px;
       max-width: 480px;
+      width: 100%;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     .emoji {
-      font-size: 2.4rem;
-      margin-bottom: 10px;
+      font-size: 2.5rem;
+      margin-bottom: 12px;
     }
 
     h1 {
@@ -40,17 +42,19 @@
       font-size: 1rem;
       color: #444;
       margin: 0 0 28px 0;
+      line-height: 1.5;
     }
 
     .logo img {
       max-width: 150px;
+      width: 100%;
       height: auto;
       margin: 12px 0 24px 0;
     }
 
     .btn {
       display: inline-block;
-      padding: 12px 24px;
+      padding: 12px 28px;
       font-size: 1rem;
       font-weight: 600;
       color: #fff;
@@ -68,17 +72,32 @@
       margin-top: 28px;
       font-size: 0.9rem;
       color: #666;
+      line-height: 1.4;
     }
 
     .contact a {
       color: #005CA9;
       text-decoration: none;
       font-weight: 500;
-      margin: 0 8px;
+      margin: 0 6px;
     }
 
     .contact a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 32px 20px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .emoji {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
@@ -89,10 +108,10 @@
     <p>Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.</p>
 
     <div class="logo">
-      <img src="https://integraltrust.com.br/img/logo_integraltrust.png" alt="Logo Integral Trust" />
+      <img src="img/logo.png" alt="Logo Integral Trust" />
     </div>
 
-    <a class="btn" href="http://www.integraltrust.com.br/?utm_source=assinatura&utm_medium=email" target="_blank">
+    <a class="btn" href="https://integraltrust.com.br/?utm_source=assinatura&utm_medium=email" target="_blank">
       Visitar nosso site
     </a>
 
@@ -102,4 +121,3 @@
   </main>
 </body>
 </html>
-
