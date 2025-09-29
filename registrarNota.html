@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrando sua resposta...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      color: #1a237e;
+    }
+    .loading {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <p class="loading">Estamos registrando sua resposta, por favor aguarde...</p>
+
+  <!-- Formulário oculto do Netlify -->
+  <form name="csat" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" id="csatForm" style="display:none;">
+    <input type="hidden" name="form-name" value="csat" />
+    <input type="hidden" name="Chamado" id="Chamado" />
+    <input type="hidden" name="CSAT" id="CSAT" />
+    <p style="display:none">
+      <label>Não preencher: <input name="bot-field" /></label>
+    </p>
+    <noscript><button type="submit">Enviar</button></noscript>
+  </form>
+
+  <script>
+    (function() {
+      // Captura parâmetros da URL
+      const params = new URLSearchParams(window.location.search);
+      const chamado = params.get("Chamado");
+      const csat = params.get("CSAT");
+
+      if (chamado && csat) {
+        document.getElementById("Chamado").value = chamado;
+        document.getElementById("CSAT").value = csat;
+        document.getElementById("csatForm").submit();
+      } else {
+        document.body.innerHTML = "<p>Link inválido: faltam parâmetros.</p>";
+      }
+    })();
+  </script>
+</body>
+</html>
