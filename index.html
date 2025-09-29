@@ -125,5 +125,28 @@
       📧 <a href="mailto:cs@integraltrust.com.br">cs@integraltrust.com.br</a> | 🌐 <a href="https://integraltrust.com.br/" target="_blank">integraltrust.com.br</a>
     </div>
   </main>
+
+  <!-- Script para registrar CSAT no SharePoint via Power Automate -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const chamado = params.get('Chamado');
+    const csat = params.get('CSAT');
+
+    if (chamado && csat) {
+      fetch("https://default5961f5edef6943308e48ee13bc43df.5f.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/37072e5984be4f42ad8713d9a158f35d/triggers/manual/paths/invoke?api-version=1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Chamado: chamado, CSAT: parseInt(csat) })
+      })
+      .then(response => {
+        if(response.ok) {
+          console.log("Nota registrada com sucesso!");
+        } else {
+          console.error("Erro ao registrar nota:", response.statusText);
+        }
+      })
+      .catch(error => console.error("Erro ao registrar nota:", error));
+    }
+  </script>
 </body>
 </html>
