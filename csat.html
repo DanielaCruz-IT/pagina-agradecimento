@@ -1,45 +1,71 @@
-<script>
-window.onload = function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const chamado = urlParams.get('Chamado');
-  const csat = urlParams.get('CSAT');
-
-  const messageEl = document.querySelector('.message');
-  
-  if (chamado && csat) {
-    // Verifica se os elementos existem antes de setar o valor
-    const chamadoInput = document.getElementById('Chamado');
-    const csatInput = document.getElementById('CSAT');
-
-    if (chamadoInput) chamadoInput.value = chamado;
-    if (csatInput) csatInput.value = csat;
-
-    const formData = new FormData();
-    formData.append('form-name', 'csat');
-    formData.append('Chamado', chamado);
-    formData.append('CSAT', csat);
-
-    fetch("/", { method: "POST", body: formData })
-      .catch(err => {
-        console.error("Erro ao enviar formulário:", err);
-        if (messageEl) messageEl.textContent = 'Erro ao enviar formulário.';
-      })
-      .finally(() => {
-        // Redireciona após 3 segundos
-        setTimeout(() => {
-          window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
-        }, 3000);
-      });
-
-    // Mensagem opcional enquanto redireciona
-    if (messageEl) messageEl.textContent = 'Nota registrada ✔️ Redirecionando...';
-    
-  } else {
-    if (messageEl) {
-      messageEl.textContent = 'Erro: parâmetros não encontrados.';
-    } else {
-      console.error('Erro: parâmetros não encontrados.');
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro CSAT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f7f7f7;
+      text-align: center;
     }
-  }
-};
-</script>
+    .message {
+      font-size: 1.2em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="message">Carregando...</div>
+
+  <!-- Campos ocultos para envio -->
+  <form id="csatForm" name="csat" style="display:none;">
+    <input type="hidden" id="Chamado" name="Chamado">
+    <input type="hidden" id="CSAT" name="CSAT">
+  </form>
+
+  <script>
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const chamado = urlParams.get('Chamado');
+      const csat = urlParams.get('CSAT');
+
+      const messageEl = document.querySelector('.message');
+      const form = document.getElementById('csatForm');
+
+      if (chamado && csat) {
+        const chamadoInput = document.getElementById('Chamado');
+        const csatInput = document.getElementById('CSAT');
+
+        if (chamadoInput) chamadoInput.value = chamado;
+        if (csatInput) csatInput.value = csat;
+
+        const formData = new FormData(form);
+
+        fetch("/", { method: "POST", body: formData })
+          .catch(err => {
+            console.error("Erro ao enviar formulário:", err);
+            if (messageEl) messageEl.textContent = 'Erro ao enviar formulário.';
+          })
+          .finally(() => {
+            if (messageEl) messageEl.textContent = 'Nota registrada ✔️ Redirecionando...';
+            setTimeout(() => {
+              window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
+            }, 3000);
+          });
+      } else {
+        if (messageEl) {
+          messageEl.textContent = 'Erro: parâmetros não encontrados.';
+        } else {
+          console.error('Erro: parâmetros não encontrados.');
+        }
+      }
+    };
+  </script>
+</body>
+</html>
