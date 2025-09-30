@@ -1,85 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avaliação de Atendimento - Integral Trust</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f5f7fa;
-      color: #1a1a1a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      text-align: center;
-      background-color: #ffffff;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 90%;
-    }
-    .checkmark {
-      font-size: 60px;
-      color: #2e5aac;
-      animation: pop 0.5s ease;
-    }
-    @keyframes pop {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    .message {
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 20px;
-      color: #2e5aac;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="checkmark">✔️</div>
-    <div class="message">Nota registrada com sucesso.</div>
-  </div>
+<script>
+window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const chamado = urlParams.get('Chamado');
+  const csat = urlParams.get('CSAT');
 
-  <form id="csat-form" name="csat" method="POST" data-netlify="true" hidden>
-    <input type="hidden" name="Chamado" id="Chamado">
-    <input type="hidden" name="CSAT" id="CSAT">
-  </form>
+  const messageEl = document.querySelector('.message');
 
-  <script>
-    window.onload = function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const chamado = urlParams.get('Chamado');
-      const csat = urlParams.get('CSAT');
+  if (chamado && csat) {
+    document.getElementById('Chamado').value = chamado;
+    document.getElementById('CSAT').value = csat;
 
-      const messageEl = document.querySelector('.message');
+    const formData = new FormData();
+    formData.append('form-name', 'csat');
+    formData.append('Chamado', chamado);
+    formData.append('CSAT', csat);
 
-      if (chamado && csat) {
-        document.getElementById('Chamado').value = chamado;
-        document.getElementById('CSAT').value = csat;
-
-        const formData = new FormData();
-        formData.append('form-name', 'csat');
-        formData.append('Chamado', chamado);
-        formData.append('CSAT', csat);
-
-        // Envia o formulário e redireciona imediatamente
-        fetch("/", { method: "POST", body: formData })
-          .finally(() => {
-            // Redireciona imediatamente para a página de agradecimento
-            window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
-          });
-      } else {
-        messageEl.textContent = 'Erro: parâmetros não encontrados.';
-      }
-    };
-  </script>
-</body>
-</html>
+    fetch("/", { method: "POST", body: formData })
+      .finally(() => {
+        // Redireciona após 1,5 segundos
+        setTimeout(() => {
+          window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
+        }, 1500);
+      });
+  } else {
+    messageEl.textContent = 'Erro: parâmetros não encontrados.';
+  }
+};
+</script>
