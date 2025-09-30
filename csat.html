@@ -60,7 +60,7 @@
 <body>
   <div class="container">
     <div class="checkmark">✔️</div>
-    <div class="message">Aguardando envio...</div>
+    <div class="message">Sua avaliação foi registrada com sucesso ✔️</div>
     <div class="sub-message"></div>
   </div>
 
@@ -98,7 +98,7 @@
             setTimeout(() => {
               const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
               window.location.href = thankYouUrl;
-            }, 6000);
+            }, 2000); // tempo reduzido para 2 segundos
           })
           .catch((error) => {
             messageEl.textContent = 'Erro ao registrar sua nota.';
