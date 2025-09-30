@@ -60,8 +60,13 @@
 <body>
   <div class="container">
     <div class="checkmark">✔️</div>
-    <div class="message">Sua avaliação foi registrada com sucesso ✔️</div>
-    <div class="sub-message"></div>
+    <div class="message">💙 Obrigado pela sua avaliação!</div>
+    <div class="sub-message">
+      Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.<br><br>
+      <strong>Logo Integral Trust</strong><br>
+      <a href='https://integraltrust.com.br' target='_blank'>Visitar nosso site</a><br>
+      <a href='mailto:cs@integraltrust.com.br'>📧 cs@integraltrust.com.br</a> | 🌐 <a href='https://integraltrust.com.br' target='_blank'>integraltrust.com.br</a>
+    </div>
   </div>
 
   <form id="csat-form" name="csat" method="POST" data-netlify="true" hidden>
@@ -75,9 +80,6 @@
       const chamado = urlParams.get('Chamado');
       const csat = urlParams.get('CSAT');
 
-      const messageEl = document.querySelector('.message');
-      const subMessageEl = document.querySelector('.sub-message');
-
       if (chamado && csat) {
         document.getElementById('Chamado').value = chamado;
         document.getElementById('CSAT').value = csat;
@@ -89,24 +91,23 @@
 
         fetch("/", { method: "POST", body: formData })
           .then(() => {
-            messageEl.textContent = '💙 Obrigado pela sua avaliação!';
-            subMessageEl.innerHTML = `Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.<br><br>
-              <strong>Logo Integral Trust</strong><br>
-              <a href='https://integraltrust.com.br' target='_blank'>Visitar nosso site</a><br>
-              <a href='mailto:cs@integraltrust.com.br'>📧 cs@integraltrust.com.br</a> | 🌐 <a href='https://integraltrust.com.br' target='_blank'>integraltrust.com.br</a>`;
-
+            // Redirecionamento após 2 segundos
             setTimeout(() => {
               const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
               window.location.href = thankYouUrl;
-            }, 2000); // tempo reduzido para 2 segundos
+            }, 2000);
           })
           .catch((error) => {
+            const messageEl = document.querySelector('.message');
             messageEl.textContent = 'Erro ao registrar sua nota.';
+            const subMessageEl = document.querySelector('.sub-message');
             subMessageEl.textContent = '';
             console.error(error);
           });
       } else {
+        const messageEl = document.querySelector('.message');
         messageEl.textContent = 'Erro: parâmetros não encontrados.';
+        const subMessageEl = document.querySelector('.sub-message');
         subMessageEl.textContent = '';
       }
     };
