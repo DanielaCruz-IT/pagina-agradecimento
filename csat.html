@@ -78,8 +78,8 @@
       <img src="https://www.integraltrust.com.br/assets/img/Integral_Brei-2-1.png" alt="Integral Trust">
     </div>
     <div class="checkmark"></div>
-    <div class="message">Sua nota foi registrada com sucesso!</div>
-    <div class="sub-message">Obrigado por nos ajudar a melhorar!</div>
+    <div class="message">Registrando sua nota...</div>
+    <div class="sub-message">Por favor, aguarde um momento.</div>
   </div>
 
   <!-- Formulário escondido para Netlify Forms -->
@@ -89,33 +89,36 @@
   </form>
 
   <script>
-    function getQueryParam(param) {
+    window.onload = function() {
       const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
+      const chamado = urlParams.get('Chamado');
+      const csat = urlParams.get('CSAT');
 
-    const chamado = getQueryParam('Chamado');
-    const csat = getQueryParam('CSAT');
+      if (chamado && csat) {
+        document.getElementById('Chamado').value = chamado;
+        document.getElementById('CSAT').value = csat;
 
-    if (chamado && csat) {
-      document.getElementById('Chamado').value = chamado;
-      document.getElementById('CSAT').value = csat;
+        const form = document.getElementById('csat-form');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'form-name');
+        hiddenInput.setAttribute('value', 'csat');
+        form.appendChild(hiddenInput);
 
-      const form = document.getElementById('csat-form');
-      const hiddenInput = document.createElement('input');
-      hiddenInput.setAttribute('type', 'hidden');
-      hiddenInput.setAttribute('name', 'form-name');
-      hiddenInput.setAttribute('value', 'csat');
-      form.appendChild(hiddenInput);
+        form.submit();
 
-      form.submit();
+        // Atualiza mensagem antes de redirecionar
+        document.querySelector('.message').textContent = 'Sua nota foi registrada com sucesso!';
+        document.querySelector('.sub-message').textContent = 'Obrigado por nos ajudar a melhorar!';
 
-      // Redireciona após 1,2s para que a animação seja vista
-      const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
-      setTimeout(() => { window.location.href = thankYouUrl; }, 1200);
-    } else {
-      document.querySelector('.message').textContent = 'Erro: parâmetros não encontrados.';
-    }
+        // Redireciona após 1,2s
+        const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
+        setTimeout(() => { window.location.href = thankYouUrl; }, 1200);
+      } else {
+        document.querySelector('.message').textContent = 'Erro: parâmetros não encontrados.';
+        document.querySelector('.sub-message').textContent = '';
+      }
+    };
   </script>
 </body>
 </html>
