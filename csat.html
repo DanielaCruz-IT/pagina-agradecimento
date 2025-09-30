@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação do Atendimento</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f4f9ff; color: #003366; }
+    h1 { font-size: 1.5rem; margin-bottom: 40px; }
+    .stars span { font-size: 3rem; cursor: pointer; color: #ccc; margin: 0 5px; }
+    .stars span.selected { color: #003366; }
+  </style>
+</head>
+<body>
+
+<h1>Em uma escala de 1 a 5 estrelas, como você avalia esse atendimento/suporte?</h1>
+
+<form name="csat" netlify id="csatForm">
+  <div class="stars">
+    <span data-value="1">★</span>
+    <span data-value="2">★</span>
+    <span data-value="3">★</span>
+    <span data-value="4">★</span>
+    <span data-value="5">★</span>
+  </div>
+  <input type="hidden" name="CSAT" id="csatValue" />
+  <input type="hidden" name="Chamado" value="12345" />
+</form>
+
+<script>
+  const stars = document.querySelectorAll('.stars span');
+  const csatInput = document.getElementById('csatValue');
+  const form = document.getElementById('csatForm');
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      csatInput.value = star.dataset.value;      // seta a nota
+      stars.forEach(s => s.classList.remove('selected'));
+      star.classList.add('selected');
+
+      form.submit();                             // envia automaticamente para Netlify Forms
+    });
+  });
+</script>
+
+</body>
+</html>
