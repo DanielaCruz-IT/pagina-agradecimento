@@ -5,10 +5,14 @@ window.onload = function() {
   const csat = urlParams.get('CSAT');
 
   const messageEl = document.querySelector('.message');
-
+  
   if (chamado && csat) {
-    document.getElementById('Chamado').value = chamado;
-    document.getElementById('CSAT').value = csat;
+    // Verifica se os elementos existem antes de setar o valor
+    const chamadoInput = document.getElementById('Chamado');
+    const csatInput = document.getElementById('CSAT');
+
+    if (chamadoInput) chamadoInput.value = chamado;
+    if (csatInput) csatInput.value = csat;
 
     const formData = new FormData();
     formData.append('form-name', 'csat');
@@ -16,14 +20,26 @@ window.onload = function() {
     formData.append('CSAT', csat);
 
     fetch("/", { method: "POST", body: formData })
+      .catch(err => {
+        console.error("Erro ao enviar formulário:", err);
+        if (messageEl) messageEl.textContent = 'Erro ao enviar formulário.';
+      })
       .finally(() => {
-        // Redireciona após 1,5 segundos
+        // Redireciona após 3 segundos
         setTimeout(() => {
           window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
-        }, 1500);
+        }, 3000);
       });
+
+    // Mensagem opcional enquanto redireciona
+    if (messageEl) messageEl.textContent = 'Nota registrada ✔️ Redirecionando...';
+    
   } else {
-    messageEl.textContent = 'Erro: parâmetros não encontrados.';
+    if (messageEl) {
+      messageEl.textContent = 'Erro: parâmetros não encontrados.';
+    } else {
+      console.error('Erro: parâmetros não encontrados.');
+    }
   }
 };
 </script>
