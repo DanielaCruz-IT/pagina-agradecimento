@@ -10,7 +10,6 @@
       background-color: #f5f7fa;
       color: #1a1a1a;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
@@ -22,7 +21,7 @@
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 500px;
+      max-width: 400px;
       width: 90%;
     }
     .checkmark {
@@ -41,32 +40,12 @@
       margin-top: 20px;
       color: #2e5aac;
     }
-    .sub-message {
-      font-size: 16px;
-      margin-top: 15px;
-      line-height: 1.5;
-      color: #1a1a1a;
-    }
-    .sub-message a {
-      color: #2e5aac;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .sub-message a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="checkmark">✔️</div>
-    <div class="message">💙 Obrigado pela sua avaliação!</div>
-    <div class="sub-message">
-      Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.<br><br>
-      <strong>Logo Integral Trust</strong><br>
-      <a href='https://integraltrust.com.br' target='_blank'>Visitar nosso site</a><br>
-      <a href='mailto:cs@integraltrust.com.br'>📧 cs@integraltrust.com.br</a> | 🌐 <a href='https://integraltrust.com.br' target='_blank'>integraltrust.com.br</a>
-    </div>
+    <div class="message">Nota registrada com sucesso ✔️</div>
   </div>
 
   <form id="csat-form" name="csat" method="POST" data-netlify="true" hidden>
@@ -93,22 +72,17 @@
           .then(() => {
             // Redirecionamento após 2 segundos
             setTimeout(() => {
-              const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
-              window.location.href = thankYouUrl;
+              window.location.href = 'https://pesquisacsat-integraltrust.netlify.app/agradecimento';
             }, 2000);
           })
           .catch((error) => {
             const messageEl = document.querySelector('.message');
             messageEl.textContent = 'Erro ao registrar sua nota.';
-            const subMessageEl = document.querySelector('.sub-message');
-            subMessageEl.textContent = '';
             console.error(error);
           });
       } else {
         const messageEl = document.querySelector('.message');
         messageEl.textContent = 'Erro: parâmetros não encontrados.';
-        const subMessageEl = document.querySelector('.sub-message');
-        subMessageEl.textContent = '';
       }
     };
   </script>
