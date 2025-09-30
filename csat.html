@@ -3,25 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro CSAT</title>
+  <title>CSAT Registrado</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f7f7f7;
+      margin: 0;
       text-align: center;
     }
+
+    .container {
+      background-color: #ffffff;
+      padding: 40px 60px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 4px solid #4BB543;
+      position: relative;
+      margin-bottom: 20px;
+      animation: pop 0.6s ease forwards;
+    }
+
+    .checkmark::after {
+      content: '';
+      position: absolute;
+      left: 22px;
+      top: 40px;
+      width: 18px;
+      height: 9px;
+      border-left: 4px solid #4BB543;
+      border-bottom: 4px solid #4BB543;
+      transform: rotate(-45deg);
+      transform-origin: left top;
+      opacity: 0;
+      animation: drawCheck 0.5s ease forwards 0.5s;
+    }
+
     .message {
-      font-size: 1.2em;
-      color: #333;
+      font-size: 1.4em;
+      color: #333333;
+      margin-bottom: 10px;
+    }
+
+    .sub-message {
+      font-size: 1em;
+      color: #666666;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0);}
+      60% { transform: scale(1.2);}
+      100% { transform: scale(1);}
+    }
+
+    @keyframes drawCheck {
+      from { opacity: 0; transform: rotate(-45deg) scaleX(0);}
+      to { opacity: 1; transform: rotate(-45deg) scaleX(1);}
     }
   </style>
 </head>
 <body>
-  <div class="message">Carregando...</div>
+  <div class="container">
+    <div class="checkmark"></div>
+    <div class="message">Nota registrada ✔️</div>
+    <div class="sub-message">Redirecionando, aguarde...</div>
+  </div>
 
   <!-- Campos ocultos para envio -->
   <form id="csatForm" name="csat" style="display:none;">
@@ -35,7 +97,6 @@
       const chamado = urlParams.get('Chamado');
       const csat = urlParams.get('CSAT');
 
-      const messageEl = document.querySelector('.message');
       const form = document.getElementById('csatForm');
 
       if (chamado && csat) {
@@ -50,20 +111,17 @@
         fetch("/", { method: "POST", body: formData })
           .catch(err => {
             console.error("Erro ao enviar formulário:", err);
-            if (messageEl) messageEl.textContent = 'Erro ao enviar formulário.';
           })
           .finally(() => {
-            if (messageEl) messageEl.textContent = 'Nota registrada ✔️ Redirecionando...';
+            // Redireciona após 3 segundos
             setTimeout(() => {
               window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
             }, 3000);
           });
       } else {
-        if (messageEl) {
-          messageEl.textContent = 'Erro: parâmetros não encontrados.';
-        } else {
-          console.error('Erro: parâmetros não encontrados.');
-        }
+        console.error('Erro: parâmetros não encontrados.');
+        const messageEl = document.querySelector('.message');
+        if(messageEl) messageEl.textContent = 'Erro: parâmetros não encontrados.';
       }
     };
   </script>
