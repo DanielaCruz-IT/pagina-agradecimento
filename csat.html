@@ -45,7 +45,7 @@
 <body>
   <div class="container">
     <div class="checkmark">✔️</div>
-    <div class="message">Nota registrada com sucesso ✔️</div>
+    <div class="message">Nota registrada com sucesso.</div>
   </div>
 
   <form id="csat-form" name="csat" method="POST" data-netlify="true" hidden>
@@ -70,9 +70,9 @@
 
         fetch("/", { method: "POST", body: formData })
           .then(() => {
-            // Redirecionamento após 2 segundos
+            // Redireciona para a página de agradecimento existente
             setTimeout(() => {
-              window.location.href = 'https://pesquisacsat-integraltrust.netlify.app/agradecimento';
+              window.location.href = 'https://pesquisacsat-integraltrust.netlify.app/agradecimento.html';
             }, 2000);
           })
           .catch((error) => {
