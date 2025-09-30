@@ -2,87 +2,68 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Registrando sua nota...</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação de Atendimento - Integral Trust</title>
   <style>
     body {
-      font-family: 'Roboto', Arial, sans-serif;
-      background-color: #e6eef5;
-      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f7fa;
+      color: #1a1a1a;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: #003366;
+      margin: 0;
     }
     .container {
-      background-color: #ffffff;
-      padding: 40px 50px;
-      border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
       text-align: center;
-      max-width: 400px;
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 500px;
       width: 90%;
     }
-    .logo {
-      margin-bottom: 20px;
-    }
-    .logo img {
-      width: 160px;
-    }
     .checkmark {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: inline-block;
-      border: 4px solid #003366;
-      position: relative;
-      margin-bottom: 20px;
-      animation: pop 0.5s ease forwards;
-    }
-    .checkmark::after {
-      content: '';
-      position: absolute;
-      left: 20px;
-      top: 40px;
-      width: 20px;
-      height: 10px;
-      border-left: 4px solid #003366;
-      border-bottom: 4px solid #003366;
-      transform: rotate(-45deg);
-      opacity: 0;
-      animation: draw 0.5s 0.5s forwards;
+      font-size: 60px;
+      color: #2e5aac;
+      animation: pop 0.5s ease;
     }
     @keyframes pop {
       0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
       100% { transform: scale(1); }
     }
-    @keyframes draw {
-      0% { width: 0; height: 0; opacity: 0; }
-      100% { width: 20px; height: 10px; opacity: 1; }
-    }
     .message {
-      font-size: 18px;
-      font-weight: 500;
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #2e5aac;
     }
     .sub-message {
-      font-size: 14px;
-      color: #555;
-      margin-top: 8px;
+      font-size: 16px;
+      margin-top: 15px;
+      line-height: 1.5;
+      color: #1a1a1a;
+    }
+    .sub-message a {
+      color: #2e5aac;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .sub-message a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="logo">
-      <img src="https://www.integraltrust.com.br/assets/img/Integral_Brei-2-1.png" alt="Integral Trust">
-    </div>
-    <div class="checkmark"></div>
-    <div class="message">Registrando sua nota...</div>
-    <div class="sub-message">Por favor, aguarde um momento.</div>
+    <div class="checkmark">✔️</div>
+    <div class="message">Aguardando envio...</div>
+    <div class="sub-message"></div>
   </div>
 
-  <!-- Formulário escondido para Netlify Forms -->
   <form id="csat-form" name="csat" method="POST" data-netlify="true" hidden>
     <input type="hidden" name="Chamado" id="Chamado">
     <input type="hidden" name="CSAT" id="CSAT">
@@ -94,29 +75,39 @@
       const chamado = urlParams.get('Chamado');
       const csat = urlParams.get('CSAT');
 
+      const messageEl = document.querySelector('.message');
+      const subMessageEl = document.querySelector('.sub-message');
+
       if (chamado && csat) {
         document.getElementById('Chamado').value = chamado;
         document.getElementById('CSAT').value = csat;
 
-        const form = document.getElementById('csat-form');
-        const hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'form-name');
-        hiddenInput.setAttribute('value', 'csat');
-        form.appendChild(hiddenInput);
+        const formData = new FormData();
+        formData.append('form-name', 'csat');
+        formData.append('Chamado', chamado);
+        formData.append('CSAT', csat);
 
-        form.submit();
+        fetch("/", { method: "POST", body: formData })
+          .then(() => {
+            messageEl.textContent = '💙 Obrigado pela sua avaliação!';
+            subMessageEl.innerHTML = `Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.<br><br>
+              <strong>Logo Integral Trust</strong><br>
+              <a href='https://integraltrust.com.br' target='_blank'>Visitar nosso site</a><br>
+              <a href='mailto:cs@integraltrust.com.br'>📧 cs@integraltrust.com.br</a> | 🌐 <a href='https://integraltrust.com.br' target='_blank'>integraltrust.com.br</a>`;
 
-        // Atualiza mensagem antes de redirecionar
-        document.querySelector('.message').textContent = 'Sua nota foi registrada com sucesso!';
-        document.querySelector('.sub-message').textContent = 'Obrigado por nos ajudar a melhorar!';
-
-        // Redireciona após 3s
-        const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
-        setTimeout(() => { window.location.href = thankYouUrl; }, 3000);
+            setTimeout(() => {
+              const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
+              window.location.href = thankYouUrl;
+            }, 6000);
+          })
+          .catch((error) => {
+            messageEl.textContent = 'Erro ao registrar sua nota.';
+            subMessageEl.textContent = '';
+            console.error(error);
+          });
       } else {
-        document.querySelector('.message').textContent = 'Erro: parâmetros não encontrados.';
-        document.querySelector('.sub-message').textContent = '';
+        messageEl.textContent = 'Erro: parâmetros não encontrados.';
+        subMessageEl.textContent = '';
       }
     };
   </script>
