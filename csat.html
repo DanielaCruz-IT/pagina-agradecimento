@@ -111,9 +111,9 @@
         document.querySelector('.message').textContent = 'Sua nota foi registrada com sucesso!';
         document.querySelector('.sub-message').textContent = 'Obrigado por nos ajudar a melhorar!';
 
-        // Redireciona após 1,2s
+        // Redireciona após 3s
         const thankYouUrl = `https://pesquisacsat-integraltrust.netlify.app/?Chamado=${chamado}&CSAT=${csat}`;
-        setTimeout(() => { window.location.href = thankYouUrl; }, 1200);
+        setTimeout(() => { window.location.href = thankYouUrl; }, 3000);
       } else {
         document.querySelector('.message').textContent = 'Erro: parâmetros não encontrados.';
         document.querySelector('.sub-message').textContent = '';
