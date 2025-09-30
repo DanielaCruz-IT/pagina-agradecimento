@@ -17,7 +17,7 @@ window.onload = function() {
 
     fetch("/", { method: "POST", body: formData })
       .finally(() => {
-        // Redireciona após 3 segundos
+        // Redireciona após 1,5 segundos
         setTimeout(() => {
           window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
         }, 3000);
