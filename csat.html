@@ -17,10 +17,10 @@ window.onload = function() {
 
     fetch("/", { method: "POST", body: formData })
       .finally(() => {
-        // Redireciona após 1,5 segundos
+        // Redireciona após 3 segundos
         setTimeout(() => {
           window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
-        }, 1500);
+        }, 3000);
       });
   } else {
     messageEl.textContent = 'Erro: parâmetros não encontrados.';
