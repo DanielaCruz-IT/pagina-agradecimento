@@ -59,6 +59,8 @@
       const chamado = urlParams.get('Chamado');
       const csat = urlParams.get('CSAT');
 
+      const messageEl = document.querySelector('.message');
+
       if (chamado && csat) {
         document.getElementById('Chamado').value = chamado;
         document.getElementById('CSAT').value = csat;
@@ -68,20 +70,13 @@
         formData.append('Chamado', chamado);
         formData.append('CSAT', csat);
 
+        // Envia o formulário e redireciona imediatamente
         fetch("/", { method: "POST", body: formData })
-          .then(() => {
-            // Redireciona para a página de agradecimento no GitHub Pages
-            setTimeout(() => {
-              window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
-            }, 2000);
-          })
-          .catch((error) => {
-            const messageEl = document.querySelector('.message');
-            messageEl.textContent = 'Erro ao registrar sua nota.';
-            console.error(error);
+          .finally(() => {
+            // Redireciona imediatamente para a página de agradecimento
+            window.location.href = 'https://danielacruz-it.github.io/pagina-agradecimento/';
           });
       } else {
-        const messageEl = document.querySelector('.message');
         messageEl.textContent = 'Erro: parâmetros não encontrados.';
       }
     };
