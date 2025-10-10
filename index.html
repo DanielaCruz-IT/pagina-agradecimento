@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Obrigado pela sua avaliação!</title>
   <style>
     body {
@@ -67,7 +67,6 @@
       margin-top: 30px;
       font-size: 0.85rem;
       color: #777;
-      line-height: 1.4;
     }
 
     footer a {
@@ -83,18 +82,19 @@
     <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços e oferecer a melhor experiência possível.</p>
     
     <!-- Logo da Integral Trust -->
-    <img src="https://integraltrust.com.br/wp-content/uploads/2023/07/logo-integraltrust.png" alt="Integral Trust Serviços" class="logo">
+    <img 
+      src="https://raw.githubusercontent.com/DanielaCruz-IT/pagina-agradecimento/main/logo.PNG" 
+      alt="Integral Trust Serviços" 
+      class="logo">
 
-    <!-- Rodapé com e-mail -->
+    <!-- Rodapé com e-mail institucional -->
     <footer>
-      Em caso de dúvidas ou sugestões,<br>
-      entre em contato pelo e-mail: <br>
-      <a href="mailto:cs@integraltrust.com.br">cs@integraltrust.com.br</a><br><br>
-      © 2025 <a href="https://integraltrust.com.br" target="_blank">Integral Trust Serviços</a>
+      © 2025 <a href="https://integraltrust.com.br" target="_blank">Integral Trust Serviços</a> —
+      <a href="mailto:cs@integraltrust.com.br">📧 cs@integraltrust.com.br</a>
     </footer>
   </div>
 
-  <!-- Captura dos parâmetros da URL (ex: ?Chamado=123&CSAT=5) -->
+  <!-- Captura dos parâmetros da URL -->
   <script>
     const params = new URLSearchParams(window.location.search);
     const chamado = params.get("Chamado");
@@ -103,7 +103,7 @@
     console.log("Chamado:", chamado);
     console.log("CSAT:", csat);
 
-    // Aqui você pode fazer o envio para o Power Automate, se quiser
+    // Você pode usar esses dados para enviar ao Power Automate se desejar
   </script>
 </body>
 </html>
