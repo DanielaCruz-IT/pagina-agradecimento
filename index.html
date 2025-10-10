@@ -32,7 +32,7 @@
     }
     p {
       font-size: 1rem;
-      color: #004aad; /* texto azul */
+      color: #004aad;
       margin-bottom: 25px;
       line-height: 1.5;
     }
@@ -47,28 +47,13 @@
       animation: pulse 1.8s infinite;
     }
     @keyframes pulse {
-      0% {
-        transform: scale(1);
-        opacity: 0.9;
-      }
-      50% {
-        transform: scale(1.1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 0.9;
-      }
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
     }
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     footer {
       margin-top: 30px;
@@ -91,44 +76,60 @@
   </div>
 
   <script>
-    // Pega os parâmetros da URL (ex: ?Chamado=12345&CSAT=4)
-    const params = new URLSearchParams(window.location.search);
-    const chamado = params.get("Chamado");
-    const csat = params.get("CSAT");
+    (async function() {
+      // Pega os parâmetros da URL
+      const params = new URLSearchParams(window.location.search);
+      const chamado = params.get("Chamado");
+      const csat = params.get("CSAT");
+      const motivo = params.get("Motivo");
+      const nota = params.get("Nota");
 
-    if (chamado && csat) {
-      // Monta o payload para enviar ao Power Automate
-      const payload = {
-        Chamado: chamado,
-        CSAT: csat,
-      };
-
-      // URL do seu fluxo Power Automate
-      const urlPowerAutomate = "https://default5961f5edef6943308e48ee13bc43df.5f.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9ca104bad68340caa8cc82145178e81b/triggers/manual/paths/invoke?api-version=1";
-
-      // Envia via POST para o Power Automate
-      fetch(urlPowerAutomate, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Erro ao enviar dados para o Power Automate");
-          }
-          return response.json();
+      // --- Envio para Power Automate ---
+      if (chamado && csat) {
+        const payload = { Chamado: chamado, CSAT: csat };
+        const urlPowerAutomate = "https://default5961f5edef6943308e48ee13bc43df.5f.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9ca104bad68340caa8cc82145178e81b/triggers/manual/paths/invoke?api-version=1";
+        fetch(urlPowerAutomate, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         })
-        .then((data) => {
-          console.log("Dados enviados com sucesso:", data);
-        })
-        .catch((error) => {
-          console.error("Erro no envio:", error);
+        .then(response => console.log("Power Automate enviado:", response))
+        .catch(err => console.error("Erro Power Automate:", err));
+      }
+
+      // --- Envio para Microsoft Forms ---
+      if (chamado || motivo || nota) {
+        const formId = "7fVhWWnvMEOOSO4TvEPfXyvNSCFaLtZFueawlnwNW75UQUZIWVVDRFdMV1NGVVczVTc5NFMyRVEwSC4u";
+        const formUrl = "https://forms.office.com/formResponse";
+        const data = new URLSearchParams();
+        data.append("id", formId);
+
+        function findInputByTitle(title) {
+          const question = Array.from(document.querySelectorAll('[data-automation-id="questionTitle"]'))
+            .find(el => el.innerText.includes(title));
+          if (!question) return null;
+          const container = question.closest('[data-automation-id="questionContent"]');
+          if (!container) return null;
+          const input = container.querySelector('input[name^="entry."], textarea[name^="entry."]');
+          return input ? input.getAttribute('name') : null;
+        }
+
+        const entryChamado = findInputByTitle("Chamado");
+        const entryMotivo = findInputByTitle("Motivo");
+        const entryNota = findInputByTitle("Nota");
+
+        if (entryChamado && chamado) data.append(entryChamado, chamado);
+        if (entryMotivo && motivo) data.append(entryMotivo, motivo);
+        if (entryNota && nota) data.append(entryNota, nota);
+
+        fetch(formUrl, {
+          method: "POST",
+          mode: "no-cors",
+          body: data
         });
-    } else {
-      console.log("Parâmetros Chamado ou CSAT não encontrados na URL.");
-    }
+        console.log("Microsoft Forms enviado!");
+      }
+    })();
   </script>
 </body>
 </html>
