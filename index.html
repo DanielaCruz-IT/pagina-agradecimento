@@ -19,31 +19,31 @@
     }
     .card {
       background: white;
-      padding: 40px 50px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      max-width: 480px;
-      animation: fadeIn 1.5s ease-in-out;
+      padding: 36px 44px;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      max-width: 460px;
+      animation: fadeIn 1.2s ease-in-out;
     }
     h1 {
       color: #004aad;
-      font-size: 1.8rem;
-      margin-bottom: 10px;
+      font-size: 1.7rem;
+      margin-bottom: 8px;
     }
     p {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: #004aad;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       line-height: 1.5;
     }
     .logo {
-      width: 150px;
+      width: 140px;
       margin-top: 10px;
     }
     .heart {
-      font-size: 2rem;
+      font-size: 1.9rem;
       color: #004aad;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       animation: pulse 1.8s infinite;
     }
     @keyframes pulse {
@@ -52,12 +52,12 @@
       100% { transform: scale(1); opacity: 0.9; }
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
     footer {
-      margin-top: 30px;
-      font-size: 0.85rem;
+      margin-top: 24px;
+      font-size: 0.8rem;
       color: #777;
     }
     footer a {
@@ -66,36 +66,55 @@
     }
     .feedback {
       text-align: left;
-      margin-top: 20px;
-      font-size: 0.95rem;
+      margin-top: 18px;
+      font-size: 0.92rem;
       color: #004aad;
     }
     .feedback ul {
-      padding-left: 20px;
+      padding-left: 18px;
+      margin: 0;
     }
+
+    /* Campo de comentário refinado */
     .comentario-extra {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      margin-top: 18px;
+      text-align: left;
+      color: #004aad;
+    }
+    .comentario-extra label {
+      font-size: 0.9rem;
+      font-weight: 500;
     }
     .comentario-extra textarea {
-      resize: vertical;
-      min-height: 60px;
-      padding: 8px;
-      font-size: 0.95rem;
+      resize: none;
+      width: 100%;
+      min-height: 45px;
+      padding: 6px 8px;
+      margin-top: 6px;
+      font-size: 0.9rem;
+      border: 1px solid #ccd6eb;
+      border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+    .comentario-extra textarea:focus {
+      border-color: #004aad;
+      outline: none;
     }
     .comentario-extra button {
-      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      padding: 9px;
       background-color: #004aad;
       color: white;
+      font-size: 0.95rem;
+      font-weight: 500;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: background-color 0.25s ease;
     }
     .comentario-extra button:hover {
-      background-color: #003080;
+      background-color: #00327a;
     }
   </style>
 </head>
@@ -108,14 +127,14 @@
 
     <div class="feedback">
       <ul>
-        <li>Chamado: <span id="retorno-chamado"></span></li>
-        <li>CSAT: <span id="retorno-nota"></span></li>
+        <li><strong>Chamado:</strong> <span id="retorno-chamado"></span></li>
+        <li><strong>CSAT:</strong> <span id="retorno-nota"></span></li>
       </ul>
     </div>
 
     <div class="comentario-extra">
-      <label for="comentarioExtra">Deixe um comentário adicional (opcional):</label>
-      <textarea id="comentarioExtra" placeholder="Digite seu comentário aqui..."></textarea>
+      <label for="comentarioExtra">Comentário adicional (opcional):</label>
+      <textarea id="comentarioExtra" placeholder="Escreva seu comentário..."></textarea>
       <button id="btnEnviarComentario">Enviar comentário</button>
     </div>
 
@@ -135,7 +154,7 @@
 
       // Função para enviar dados para Google Apps Script
       function enviarDados(comentario) {
-        const urlScript = "https://script.google.com/macros/s/AKfycbwPKQjNaSNd_qPX_WSiV69mT5YHYAKyNDcRjoOKgdhUrFpSif4elmRK6_nZ2AydImez/exec";
+        const urlScript = "https://script.google.com/macros/s/AKfycbwyH19WR52fjNLdBz0V4yLDIRUZDkOSwzCOsT_IACxeEd2LzBXms9DDy_KPFoCZo34/exec";
 
         fetch(urlScript, {
           method: "POST",
