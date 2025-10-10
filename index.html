@@ -1,50 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Obrigado!</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #f5f5f5;
-    }
-    h1 {
-      color: #0d47a1;
-    }
-    .nota {
-      font-size: 1.8rem;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    .logo {
-      margin-top: 30px;
-      max-width: 200px;
-    }
-  </style>
-</head>
-<body>
+<form name="CSAT" method="POST" data-netlify="true">
+  <input type="hidden" name="Chamado" id="Chamado">
+  <input type="hidden" name="Motivo" id="Motivo">
+  <input type="hidden" name="Nota" id="Nota">
+</form>
 
-  <h1>💙 Obrigado pela sua avaliação!</h1>
-  <p>Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.</p>
-  
-  <p class="nota" id="nota-mensagem"></p>
+<script>
+  // Captura os parâmetros da URL
+  const params = new URLSearchParams(window.location.search);
+  document.getElementById('Chamado').value = params.get('Chamado');
+  document.getElementById('Motivo').value = params.get('Motivo');
+  document.getElementById('Nota').value = params.get('Nota');
 
-  <img src="logo.png" alt="Logo Integral Trust" class="logo">
+  // Envia automaticamente o formulário para o Netlify Forms
+  document.forms["CSAT"].submit();
+</script>
 
-  <script>
-    // Captura os parâmetros da URL
-    const params = new URLSearchParams(window.location.search);
-    const chamado = params.get('Chamado'); // Número do chamado
-    const nota = params.get('nota');       // Nota do cliente
-
-    if(chamado && nota){
-      document.getElementById('nota-mensagem').textContent = `Você avaliou: ${nota} ⭐ para o chamado ${chamado}`;
-      // Aqui você pode adicionar envio para planilha ou API
-    }
-  </script>
-
-</body>
-</html>
+<h2>💙 Obrigado pela sua avaliação!</h2>
+<p>Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.</p>
