@@ -64,6 +64,15 @@
       color: #004aad;
       text-decoration: none;
     }
+    .feedback {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: #004aad;
+    }
+    .feedback ul {
+      padding-left: 20px;
+    }
   </style>
 </head>
 <body>
@@ -72,55 +81,51 @@
     <h1>Obrigado pela sua avaliação!</h1>
     <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços e oferecer a melhor experiência possível.</p>
     <img src="logo.PNG" alt="Integral Trust Serviços" class="logo" />
+
+    <div class="feedback">
+      <p>Sua avaliação foi registrada:</p>
+      <ul>
+        <li>Chamado: <span id="retorno-chamado"></span></li>
+        <li>CSAT: <span id="retorno-csat"></span></li>
+        <li>Motivo: <span id="retorno-motivo"></span></li>
+        <li>Nota: <span id="retorno-nota"></span></li>
+      </ul>
+    </div>
+
     <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
   </div>
 
   <script>
-    (async function() {
-      // Pega os parâmetros da URL
+    (function() {
       const params = new URLSearchParams(window.location.search);
       const chamado = params.get("Chamado");
       const csat = params.get("CSAT");
       const motivo = params.get("Motivo");
       const nota = params.get("Nota");
 
-      // --- Envio para Power Automate ---
-      if (chamado && csat) {
-        const payload = { Chamado: chamado, CSAT: csat };
-        const urlPowerAutomate = "https://default5961f5edef6943308e48ee13bc43df.5f.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9ca104bad68340caa8cc82145178e81b/triggers/manual/paths/invoke?api-version=1";
-        fetch(urlPowerAutomate, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        })
-        .then(response => console.log("Power Automate enviado:", response))
-        .catch(err => console.error("Erro Power Automate:", err));
-      }
+      // Mostra feedback visual na página
+      document.getElementById("retorno-chamado").textContent = chamado || "-";
+      document.getElementById("retorno-csat").textContent = csat || "-";
+      document.getElementById("retorno-motivo").textContent = motivo || "-";
+      document.getElementById("retorno-nota").textContent = nota || "-";
 
-      // --- Envio para Microsoft Forms ---
+      // --- Envio para Microsoft Forms oculto ---
       if (chamado || motivo || nota) {
         const formId = "7fVhWWnvMEOOSO4TvEPfXyvNSCFaLtZFueawlnwNW75UQUZIWVVDRFdMV1NGVVczVTc5NFMyRVEwSC4u";
         const formUrl = "https://forms.office.com/formResponse";
         const data = new URLSearchParams();
         data.append("id", formId);
 
-        function findInputByTitle(title) {
-          const question = Array.from(document.querySelectorAll('[data-automation-id="questionTitle"]'))
-            .find(el => el.innerText.includes(title));
-          if (!question) return null;
-          const container = question.closest('[data-automation-id="questionContent"]');
-          if (!container) return null;
-          const input = container.querySelector('input[name^="entry."], textarea[name^="entry."]');
-          return input ? input.getAttribute('name') : null;
-        }
+        // Campos do Forms
+        const entryMap = {
+          "Chamado": "entry.1154389232",
+          "Motivo": "entry.756092432",
+          "Nota": "entry.994420322"
+        };
 
-        const entryChamado = findInputByTitle("Chamado");
-        const entryMotivo = findInputByTitle("Motivo");
-        const entryNota = findInputByTitle("Nota");
-
-        if (entryChamado && chamado) data.append(entryChamado, chamado);
-        if (entryMotivo && motivo) data.append(entryMotivo, motivo);
-        if (entryNota && nota) data.append(entryNota, nota);
+        if (chamado) data.append(entryMap["Chamado"], chamado);
+        if (motivo) data.append(entryMap["Motivo"], motivo);
+        if (nota) data.append(entryMap["Nota"], nota);
 
         fetch(formUrl, {
           method: "POST",
