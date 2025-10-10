@@ -65,19 +65,17 @@
       text-decoration: none;
     }
     .feedback {
-      text-align: left;
       margin-top: 18px;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       color: #004aad;
+      text-align: center;
     }
-    .feedback ul {
-      padding-left: 18px;
-      margin: 0;
+    .feedback span {
+      font-weight: bold;
     }
 
-    /* Campo de comentário refinado */
     .comentario-extra {
-      margin-top: 18px;
+      margin-top: 24px;
       text-align: left;
       color: #004aad;
     }
@@ -116,6 +114,11 @@
     .comentario-extra button:hover {
       background-color: #00327a;
     }
+    .status {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: green;
+    }
   </style>
 </head>
 <body>
@@ -126,16 +129,14 @@
     <img src="logo.PNG" alt="Integral Trust Serviços" class="logo" />
 
     <div class="feedback">
-      <ul>
-        <li><strong>Chamado:</strong> <span id="retorno-chamado"></span></li>
-        <li><strong>CSAT:</strong> <span id="retorno-nota"></span></li>
-      </ul>
+      Chamado: <span id="retorno-chamado">-</span> | CSAT: <span id="retorno-nota">-</span>
     </div>
 
     <div class="comentario-extra">
       <label for="comentarioExtra">Comentário adicional (opcional):</label>
       <textarea id="comentarioExtra" placeholder="Escreva seu comentário..."></textarea>
       <button id="btnEnviarComentario">Enviar comentário</button>
+      <div class="status" id="statusComentario"></div>
     </div>
 
     <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
@@ -144,15 +145,15 @@
   <script>
     (function() {
       const params = new URLSearchParams(window.location.search);
-      const chamado = params.get("Chamado") || "-";
-      const csat = params.get("CSAT") || "-";
-      const motivo = params.get("Motivo") || "";
+      const chamado = params.get("Chamado") || params.get("chamado") || "-";
+      const csat = params.get("CSAT") || params.get("csat") || "-";
+      const motivo = params.get("Motivo") || params.get("motivo") || "";
 
-      // Exibe Chamado e CSAT
       document.getElementById("retorno-chamado").textContent = chamado;
       document.getElementById("retorno-nota").textContent = csat;
 
-      // Função para enviar dados para Google Apps Script
+      const statusComentario = document.getElementById("statusComentario");
+
       function enviarDados(comentario) {
         const urlScript = "https://script.google.com/macros/s/AKfycbwyH19WR52fjNLdBz0V4yLDIRUZDkOSwzCOsT_IACxeEd2LzBXms9DDy_KPFoCZo34/exec";
 
@@ -160,28 +161,40 @@
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams({
-            Chamado: chamado,
-            CSAT: csat,
-            Motivo: motivo,
-            Comentario: comentario || ""
+            chamado: chamado,
+            csat: csat,
+            motivo: motivo,
+            comentario: comentario || ""
           })
         })
-        .then(() => console.log("Dados enviados com sucesso"))
-        .catch(err => console.error("Erro ao enviar dados:", err));
+        .then(res => res.text())
+        .then(text => {
+          if (text === "OK") {
+            statusComentario.textContent = comentario ? "Comentário enviado com sucesso!" : "Avaliação registrada com sucesso!";
+            statusComentario.style.color = "green";
+          } else {
+            statusComentario.textContent = "Erro ao enviar: " + text;
+            statusComentario.style.color = "red";
+          }
+        })
+        .catch(err => {
+          statusComentario.textContent = "Erro de conexão: " + err;
+          statusComentario.style.color = "red";
+        });
       }
 
-      // Envia dados iniciais sem comentário extra
+      // Envia CSAT inicial
       enviarDados("");
 
-      // Botão de comentário extra
+      // Botão comentário extra
       document.getElementById("btnEnviarComentario").addEventListener("click", () => {
         const comentarioExtra = document.getElementById("comentarioExtra").value.trim();
         if (!comentarioExtra) {
-          alert("Digite algum comentário antes de enviar!");
+          statusComentario.textContent = "Digite algum comentário antes de enviar!";
+          statusComentario.style.color = "red";
           return;
         }
         enviarDados(comentarioExtra);
-        alert("Comentário enviado com sucesso!");
         document.getElementById("comentarioExtra").value = "";
       });
     })();
