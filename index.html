@@ -73,6 +73,30 @@
     .feedback ul {
       padding-left: 20px;
     }
+    .comentario-extra {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .comentario-extra textarea {
+      resize: vertical;
+      min-height: 60px;
+      padding: 8px;
+      font-size: 0.95rem;
+    }
+    .comentario-extra button {
+      padding: 10px;
+      background-color: #004aad;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .comentario-extra button:hover {
+      background-color: #003080;
+    }
   </style>
 </head>
 <body>
@@ -83,11 +107,16 @@
     <img src="logo.PNG" alt="Integral Trust Serviços" class="logo" />
 
     <div class="feedback">
-      
       <ul>
         <li>Chamado: <span id="retorno-chamado"></span></li>
         <li>CSAT: <span id="retorno-nota"></span></li>
       </ul>
+    </div>
+
+    <div class="comentario-extra">
+      <label for="comentarioExtra">Deixe um comentário adicional (opcional):</label>
+      <textarea id="comentarioExtra" placeholder="Digite seu comentário aqui..."></textarea>
+      <button id="btnEnviarComentario">Enviar comentário</button>
     </div>
 
     <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
@@ -96,33 +125,47 @@
   <script>
     (function() {
       const params = new URLSearchParams(window.location.search);
-      const chamado = params.get("Chamado");
-      const csat = params.get("CSAT");
-      const motivo = params.get("Motivo");
+      const chamado = params.get("Chamado") || "-";
+      const csat = params.get("CSAT") || "-";
+      const motivo = params.get("Motivo") || "";
 
-      // Feedback visual apenas com Chamado e Nota
-      document.getElementById("retorno-chamado").textContent = chamado || "-";
-      document.getElementById("retorno-nota").textContent = csat || "-";
+      // Exibe Chamado e CSAT
+      document.getElementById("retorno-chamado").textContent = chamado;
+      document.getElementById("retorno-nota").textContent = csat;
 
-      <script>
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const chamado = params.get("Chamado");
-  const csat = params.get("CSAT");
-  const motivo = params.get("Motivo");
+      // Função para enviar dados para Google Apps Script
+      function enviarDados(comentario) {
+        const urlScript = "https://script.google.com/macros/s/AKfycbwPKQjNaSNd_qPX_WSiV69mT5YHYAKyNDcRjoOKgdhUrFpSif4elmRK6_nZ2AydImez/exec";
 
-  if (chamado || csat || motivo) {
-    fetch("https://script.google.com/macros/s/AKfycbwPKQjNaSNd_qPX_WSiV69mT5YHYAKyNDcRjoOKgdhUrFpSif4elmRK6_nZ2AydImez/exec", {
-      method: "POST",
-      body: new URLSearchParams({
-        Chamado: chamado || "",
-        CSAT: csat || "",
-        Motivo: motivo || ""
-      })
-    });
-  }
-})();
-</script>
+        fetch(urlScript, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            Chamado: chamado,
+            CSAT: csat,
+            Motivo: motivo,
+            Comentario: comentario || ""
+          })
+        })
+        .then(() => console.log("Dados enviados com sucesso"))
+        .catch(err => console.error("Erro ao enviar dados:", err));
+      }
 
+      // Envia dados iniciais sem comentário extra
+      enviarDados("");
+
+      // Botão de comentário extra
+      document.getElementById("btnEnviarComentario").addEventListener("click", () => {
+        const comentarioExtra = document.getElementById("comentarioExtra").value.trim();
+        if (!comentarioExtra) {
+          alert("Digite algum comentário antes de enviar!");
+          return;
+        }
+        enviarDados(comentarioExtra);
+        alert("Comentário enviado com sucesso!");
+        document.getElementById("comentarioExtra").value = "";
+      });
+    })();
+  </script>
 </body>
 </html>
