@@ -104,34 +104,25 @@
       document.getElementById("retorno-chamado").textContent = chamado || "-";
       document.getElementById("retorno-nota").textContent = csat || "-";
 
-      // --- Envio para Microsoft Forms oculto ---
-     if (chamado || csat || motivo) {
-  const formUrl = "https://forms.office.com/formResponse";
-  const data = new URLSearchParams();
+      <script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const chamado = params.get("Chamado");
+  const csat = params.get("CSAT");
+  const motivo = params.get("Motivo");
 
-  const entryMap = {
-    "Chamado": "entry.1154389232",
-    "CSAT": "entry.994420322",
-    "Motivo": "entry.756092432",
-    "DataResposta": "entry.1234567890"
-  };
+  if (chamado || csat || motivo) {
+    fetch("https://script.google.com/macros/s/AKfycbwPKQjNaSNd_qPX_WSiV69mT5YHYAKyNDcRjoOKgdhUrFpSif4elmRK6_nZ2AydImez/exec", {
+      method: "POST",
+      body: new URLSearchParams({
+        Chamado: chamado || "",
+        CSAT: csat || "",
+        Motivo: motivo || ""
+      })
+    });
+  }
+})();
+</script>
 
-  const dataResposta = new Date().toLocaleString();
-
-  if (chamado) data.append(entryMap["Chamado"], chamado);
-  if (csat) data.append(entryMap["CSAT"], csat); // corrigido
-  if (motivo) data.append(entryMap["Motivo"], motivo);
-  data.append(entryMap["DataResposta"], dataResposta);
-
-  fetch(formUrl, {
-    method: "POST",
-    mode: "no-cors",
-    body: data
-  });
-
-  console.log("Microsoft Forms enviado!");
-}
-    })();
-  </script>
 </body>
 </html>
