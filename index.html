@@ -67,6 +67,7 @@
       margin-top: 30px;
       font-size: 0.85rem;
       color: #777;
+      line-height: 1.4;
     }
 
     footer a {
@@ -80,8 +81,17 @@
     <div class="heart">💙</div>
     <h1>Obrigado pela sua avaliação!</h1>
     <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços e oferecer a melhor experiência possível.</p>
+    
+    <!-- Logo da Integral Trust -->
     <img src="https://integraltrust.com.br/wp-content/uploads/2023/07/logo-integraltrust.png" alt="Integral Trust Serviços" class="logo">
-    <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
+
+    <!-- Rodapé com e-mail -->
+    <footer>
+      Em caso de dúvidas ou sugestões,<br>
+      entre em contato pelo e-mail: <br>
+      <a href="mailto:cs@integraltrust.com.br">cs@integraltrust.com.br</a><br><br>
+      © 2025 <a href="https://integraltrust.com.br" target="_blank">Integral Trust Serviços</a>
+    </footer>
   </div>
 
   <!-- Captura dos parâmetros da URL (ex: ?Chamado=123&CSAT=5) -->
@@ -89,8 +99,11 @@
     const params = new URLSearchParams(window.location.search);
     const chamado = params.get("Chamado");
     const csat = params.get("CSAT");
+
     console.log("Chamado:", chamado);
     console.log("CSAT:", csat);
+
+    // Aqui você pode fazer o envio para o Power Automate, se quiser
   </script>
 </body>
 </html>
