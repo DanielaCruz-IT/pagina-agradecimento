@@ -1,50 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Obrigado!</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #f5f5f5;
-    }
-    h1 {
-      color: #0d47a1;
-    }
-    .nota {
-      font-size: 1.8rem;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    .logo {
-      margin-top: 30px;
-      max-width: 200px;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Obrigado pela sua avaliação!</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f4f6fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    h1 {
+      color: #004aad;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .logo {
+      width: 150px;
+      margin-top: 10px;
+    }
+
+    .heart {
+      font-size: 2rem;
+      color: #004aad;
+      margin-bottom: 10px;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    footer a {
+      color: #004aad;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
+  <div class="card">
+    <div class="heart">💙</div>
+    <h1>Obrigado pela sua avaliação!</h1>
+    <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços e oferecer a melhor experiência possível.</p>
+    <img src="https://integraltrust.com.br/wp-content/uploads/2023/07/logo-integraltrust.png" alt="Integral Trust Serviços" class="logo">
+    <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
+  </div>
 
-  <h1>💙 Obrigado pela sua avaliação!</h1>
-  <p>Sua opinião nos ajuda a evoluir e oferecer a melhor experiência possível.</p>
-  
-  <p class="nota" id="nota-mensagem"></p>
-
-  <img src="logo.png" alt="Logo Integral Trust" class="logo">
-
-  <script>
-    // Captura os parâmetros da URL
-    const params = new URLSearchParams(window.location.search);
-    const chamado = params.get('Chamado'); // Número do chamado
-    const nota = params.get('nota');       // Nota do cliente
-
-    if(chamado && nota){
-      document.getElementById('nota-mensagem').textContent = `Você avaliou: ${nota} ⭐ para o chamado ${chamado}`;
-      // Aqui você pode adicionar envio para planilha ou API
-    }
-  </script>
-
+  <!-- Captura dos parâmetros da URL (ex: ?Chamado=123&CSAT=5) -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const chamado = params.get("Chamado");
+    const csat = params.get("CSAT");
+    console.log("Chamado:", chamado);
+    console.log("CSAT:", csat);
+  </script>
 </body>
 </html>
