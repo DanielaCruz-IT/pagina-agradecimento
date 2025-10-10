@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Obrigado pela sua avaliação!</title>
   <style>
     body {
@@ -10,20 +10,18 @@
       background-color: #f4f6fa;
       color: #333;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      text-align: center;
     }
     .card {
       background: white;
       padding: 36px 44px;
       border-radius: 14px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
       max-width: 460px;
-      animation: fadeIn 1.2s ease-in-out;
+      text-align: center;
     }
     h1 {
       color: #004aad;
@@ -34,69 +32,26 @@
       font-size: 0.95rem;
       color: #004aad;
       margin-bottom: 20px;
-      line-height: 1.5;
     }
     .logo {
       width: 140px;
       margin-top: 10px;
     }
-    .heart {
-      font-size: 1.9rem;
-      color: #004aad;
-      margin-bottom: 8px;
-      animation: pulse 1.8s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.9; }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    footer {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: #777;
-    }
-    footer a {
-      color: #004aad;
-      text-decoration: none;
-    }
     .feedback {
-      margin-top: 18px;
-      font-size: 0.95rem;
-      color: #004aad;
-      text-align: center;
-    }
-    .feedback span {
-      font-weight: bold;
-    }
-
-    .comentario-extra {
-      margin-top: 24px;
       text-align: left;
+      margin-top: 18px;
+      font-size: 0.92rem;
       color: #004aad;
     }
-    .comentario-extra label {
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
+    .feedback ul { padding-left: 18px; margin: 0; }
+    .comentario-extra { margin-top: 18px; text-align: left; }
     .comentario-extra textarea {
-      resize: none;
       width: 100%;
       min-height: 45px;
       padding: 6px 8px;
-      margin-top: 6px;
-      font-size: 0.9rem;
-      border: 1px solid #ccd6eb;
       border-radius: 6px;
-      transition: border-color 0.2s;
-    }
-    .comentario-extra textarea:focus {
-      border-color: #004aad;
-      outline: none;
+      border: 1px solid #ccd6eb;
+      resize: none;
     }
     .comentario-extra button {
       margin-top: 10px;
@@ -104,97 +59,79 @@
       padding: 9px;
       background-color: #004aad;
       color: white;
-      font-size: 0.95rem;
       font-weight: 500;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.25s ease;
     }
-    .comentario-extra button:hover {
-      background-color: #00327a;
-    }
-    .status {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      color: green;
-    }
+    .comentario-extra button:hover { background-color: #00327a; }
+    footer { margin-top: 24px; font-size: 0.8rem; color: #777; }
+    footer a { color: #004aad; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="heart">💙</div>
     <h1>Obrigado pela sua avaliação!</h1>
-    <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços e oferecer a melhor experiência possível.</p>
-    <img src="logo.PNG" alt="Integral Trust Serviços" class="logo" />
+    <p>Sua opinião é essencial para aprimorarmos nossos serviços.</p>
+    <img src="logo.PNG" alt="Integral Trust Serviços" class="logo">
 
     <div class="feedback">
-      Chamado: <span id="retorno-chamado">-</span> | CSAT: <span id="retorno-nota">-</span>
+      <ul>
+        <li><strong>Chamado:</strong> <span id="retorno-chamado"></span></li>
+        <li><strong>CSAT:</strong> <span id="retorno-nota"></span></li>
+      </ul>
     </div>
 
     <div class="comentario-extra">
       <label for="comentarioExtra">Comentário adicional (opcional):</label>
       <textarea id="comentarioExtra" placeholder="Escreva seu comentário..."></textarea>
       <button id="btnEnviarComentario">Enviar comentário</button>
-      <div class="status" id="statusComentario"></div>
     </div>
 
     <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
+
+    <!-- Formulário invisível para envio direto -->
+    <form id="formEnvio" action="https://script.google.com/macros/s/AKfycbwvHuF0F1CAUAxKjBGpkIcHVZ1HkJzOAwN4AF456_a0ZRSaiABMXCUgxibcEhSec2D7/exec" method="post" target="iframeEnvio">
+      <input type="hidden" name="Chamado" id="formChamado">
+      <input type="hidden" name="CSAT" id="formCSAT">
+      <input type="hidden" name="Motivo" id="formMotivo">
+      <input type="hidden" name="Comentario" id="formComentario">
+    </form>
+    <iframe name="iframeEnvio" style="display:none;"></iframe>
   </div>
 
   <script>
     (function() {
+      // Captura parâmetros da URL
       const params = new URLSearchParams(window.location.search);
-      const chamado = params.get("Chamado") || params.get("chamado") || "-";
-      const csat = params.get("CSAT") || params.get("csat") || "-";
-      const motivo = params.get("Motivo") || params.get("motivo") || "";
-
+      const chamado = params.get("Chamado") || "-";
+      const csat = params.get("CSAT") || "-";
+      const motivo = params.get("Motivo") || "";
+      
       document.getElementById("retorno-chamado").textContent = chamado;
       document.getElementById("retorno-nota").textContent = csat;
 
-      const statusComentario = document.getElementById("statusComentario");
+      const form = document.getElementById("formEnvio");
+      const fChamado = document.getElementById("formChamado");
+      const fCSAT = document.getElementById("formCSAT");
+      const fMotivo = document.getElementById("formMotivo");
+      const fComentario = document.getElementById("formComentario");
 
-      function enviarDados(comentario) {
-        const urlScript = "https://script.google.com/macros/s/AKfycbwyH19WR52fjNLdBz0V4yLDIRUZDkOSwzCOsT_IACxeEd2LzBXms9DDy_KPFoCZo34/exec";
+      // Preenche o formulário invisível e envia automaticamente (sem comentário)
+      fChamado.value = chamado;
+      fCSAT.value = csat;
+      fMotivo.value = motivo;
+      fComentario.value = "";
+      form.submit();
 
-        fetch(urlScript, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({
-            chamado: chamado,
-            csat: csat,
-            motivo: motivo,
-            comentario: comentario || ""
-          })
-        })
-        .then(res => res.text())
-        .then(text => {
-          if (text === "OK") {
-            statusComentario.textContent = comentario ? "Comentário enviado com sucesso!" : "Avaliação registrada com sucesso!";
-            statusComentario.style.color = "green";
-          } else {
-            statusComentario.textContent = "Erro ao enviar: " + text;
-            statusComentario.style.color = "red";
-          }
-        })
-        .catch(err => {
-          statusComentario.textContent = "Erro de conexão: " + err;
-          statusComentario.style.color = "red";
-        });
-      }
-
-      // Envia CSAT inicial
-      enviarDados("");
-
-      // Botão comentário extra
+      // Botão de comentário extra
       document.getElementById("btnEnviarComentario").addEventListener("click", () => {
         const comentarioExtra = document.getElementById("comentarioExtra").value.trim();
-        if (!comentarioExtra) {
-          statusComentario.textContent = "Digite algum comentário antes de enviar!";
-          statusComentario.style.color = "red";
-          return;
-        }
-        enviarDados(comentarioExtra);
+        if (!comentarioExtra) { alert("Digite algum comentário antes de enviar!"); return; }
+
+        fComentario.value = comentarioExtra;
+        form.submit();
+        alert("Comentário enviado com sucesso!");
         document.getElementById("comentarioExtra").value = "";
       });
     })();
