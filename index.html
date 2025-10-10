@@ -26,7 +26,6 @@
     <ul>
       <li><strong>Chamado:</strong> <span id="retorno-chamado"></span></li>
       <li><strong>CSAT:</strong> <span id="retorno-nota"></span></li>
-      <li><strong>Motivo:</strong> <span id="retorno-motivo"></span></li>
     </ul>
   </div>
 
@@ -42,17 +41,11 @@
   const params = new URLSearchParams(window.location.search);
   const chamado = params.get("Chamado") || "-";
   const csat = params.get("CSAT") || "-";
-  let motivo = params.get("Motivo") || "";
+  const motivo = params.get("Motivo") || "";
+  const id = params.get("ID") || Date.now(); // Gera ID único se não houver
 
-  // Se Motivo não veio na URL, podemos definir um valor padrão ou capturá-lo de outra forma
-  if (!motivo) motivo = "Sem Motivo informado";
-
-  const id = params.get("ID") || Date.now(); // ID único
-
-  // Exibe no HTML
   document.getElementById("retorno-chamado").textContent = chamado;
   document.getElementById("retorno-nota").textContent = csat;
-  document.getElementById("retorno-motivo").textContent = motivo;
 
   const urlWebApp = "https://script.google.com/macros/s/AKfycbyPDrocs97Un5qdG37ofA6SNHLQIUw1s3LMbd9FGS7iC1E5i3ma7DeStrVhClhdGjXZ/exec";
 
@@ -75,7 +68,7 @@
     .catch(err => console.error("Erro ao enviar dados:", err));
   }
 
-  // Envia nota inicial com Motivo
+  // Envia nota inicial
   enviarDados("");
 
   // Comentário extra
