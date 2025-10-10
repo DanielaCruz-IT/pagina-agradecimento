@@ -86,8 +86,6 @@
       <p>Sua avaliação foi registrada:</p>
       <ul>
         <li>Chamado: <span id="retorno-chamado"></span></li>
-        <li>CSAT: <span id="retorno-csat"></span></li>
-        <li>Motivo: <span id="retorno-motivo"></span></li>
         <li>Nota: <span id="retorno-nota"></span></li>
       </ul>
     </div>
@@ -99,33 +97,35 @@
     (function() {
       const params = new URLSearchParams(window.location.search);
       const chamado = params.get("Chamado");
-      const csat = params.get("CSAT");
-      const motivo = params.get("Motivo");
       const nota = params.get("Nota");
+      const motivo = params.get("Motivo");
 
-      // Mostra feedback visual na página
+      // Feedback visual apenas com Chamado e Nota
       document.getElementById("retorno-chamado").textContent = chamado || "-";
-      document.getElementById("retorno-csat").textContent = csat || "-";
-      document.getElementById("retorno-motivo").textContent = motivo || "-";
       document.getElementById("retorno-nota").textContent = nota || "-";
 
       // --- Envio para Microsoft Forms oculto ---
-      if (chamado || motivo || nota) {
+      if (chamado || nota || motivo) {
         const formId = "7fVhWWnvMEOOSO4TvEPfXyvNSCFaLtZFueawlnwNW75UQUZIWVVDRFdMV1NGVVczVTc5NFMyRVEwSC4u";
         const formUrl = "https://forms.office.com/formResponse";
         const data = new URLSearchParams();
         data.append("id", formId);
 
-        // Campos do Forms
+        // IDs dos campos no Forms (substitua pelo correto)
         const entryMap = {
           "Chamado": "entry.1154389232",
+          "Nota": "entry.994420322",
           "Motivo": "entry.756092432",
-          "Nota": "entry.994420322"
+          "DataResposta": "entry.1234567890"
         };
 
+        // Preenche DataResposta com data/hora atual
+        const dataResposta = new Date().toLocaleString();
+
         if (chamado) data.append(entryMap["Chamado"], chamado);
-        if (motivo) data.append(entryMap["Motivo"], motivo);
         if (nota) data.append(entryMap["Nota"], nota);
+        if (motivo) data.append(entryMap["Motivo"], motivo);
+        data.append(entryMap["DataResposta"], dataResposta);
 
         fetch(formUrl, {
           method: "POST",
