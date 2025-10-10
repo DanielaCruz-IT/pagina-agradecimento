@@ -86,7 +86,7 @@
       <p>Sua avaliação foi registrada:</p>
       <ul>
         <li>Chamado: <span id="retorno-chamado"></span></li>
-        <li>Nota: <span id="retorno-nota"></span></li>
+        <li>CSAT: <span id="retorno-nota"></span></li>
       </ul>
     </div>
 
@@ -97,15 +97,15 @@
     (function() {
       const params = new URLSearchParams(window.location.search);
       const chamado = params.get("Chamado");
-      const nota = params.get("Nota");
+      const csat = params.get("CSAT");
       const motivo = params.get("Motivo");
 
       // Feedback visual apenas com Chamado e Nota
       document.getElementById("retorno-chamado").textContent = chamado || "-";
-      document.getElementById("retorno-nota").textContent = nota || "-";
+      document.getElementById("retorno-nota").textContent = csat || "-";
 
       // --- Envio para Microsoft Forms oculto ---
-      if (chamado || nota || motivo) {
+      if (chamado || csat || motivo) {
         const formId = "7fVhWWnvMEOOSO4TvEPfXyvNSCFaLtZFueawlnwNW75UQUZIWVVDRFdMV1NGVVczVTc5NFMyRVEwSC4u";
         const formUrl = "https://forms.office.com/formResponse";
         const data = new URLSearchParams();
@@ -114,7 +114,7 @@
         // IDs dos campos no Forms (substitua pelo correto)
         const entryMap = {
           "Chamado": "entry.1154389232",
-          "Nota": "entry.994420322",
+          "CSAT": "entry.994420322",
           "Motivo": "entry.756092432",
           "DataResposta": "entry.1234567890"
         };
@@ -123,7 +123,7 @@
         const dataResposta = new Date().toLocaleString();
 
         if (chamado) data.append(entryMap["Chamado"], chamado);
-        if (nota) data.append(entryMap["Nota"], nota);
+        if (csat) data.append(entryMap["Nota"], csat);
         if (motivo) data.append(entryMap["Motivo"], motivo);
         data.append(entryMap["DataResposta"], dataResposta);
 
