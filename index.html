@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Obrigado pela sua avaliação!</title>
   <style>
     body {
@@ -14,66 +14,33 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      text-align: center;
     }
     .card {
       background: white;
       padding: 36px 44px;
       border-radius: 14px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
       max-width: 460px;
       text-align: center;
     }
-    h1 {
-      color: #004aad;
-      font-size: 1.7rem;
-      margin-bottom: 8px;
-    }
-    p {
-      font-size: 0.95rem;
-      color: #004aad;
-      margin-bottom: 20px;
-    }
-    .logo {
-      width: 140px;
-      margin-top: 10px;
-    }
-    .feedback {
-      text-align: left;
-      margin-top: 18px;
-      font-size: 0.92rem;
-      color: #004aad;
-    }
+    h1 { color: #004aad; font-size: 1.7rem; margin-bottom: 8px; }
+    p { font-size: 0.95rem; color: #004aad; margin-bottom: 20px; }
+    .logo { width: 140px; margin-top: 10px; }
+    .feedback { text-align: left; margin-top: 18px; font-size: 0.92rem; color: #004aad; }
     .feedback ul { padding-left: 18px; margin: 0; }
-    .comentario-extra { margin-top: 18px; text-align: left; }
-    .comentario-extra textarea {
-      width: 100%;
-      min-height: 45px;
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid #ccd6eb;
-      resize: none;
-    }
-    .comentario-extra button {
-      margin-top: 10px;
-      width: 100%;
-      padding: 9px;
-      background-color: #004aad;
-      color: white;
-      font-weight: 500;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+    .comentario-extra { margin-top: 18px; text-align: left; color: #004aad; }
+    .comentario-extra label { font-size: 0.9rem; font-weight: 500; }
+    .comentario-extra textarea { width: 100%; min-height: 45px; padding: 6px 8px; margin-top: 6px; font-size: 0.9rem; border: 1px solid #ccd6eb; border-radius: 6px; }
+    .comentario-extra button { margin-top: 10px; width: 100%; padding: 9px; background-color: #004aad; color: white; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; }
     .comentario-extra button:hover { background-color: #00327a; }
-    footer { margin-top: 24px; font-size: 0.8rem; color: #777; }
-    footer a { color: #004aad; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Obrigado pela sua avaliação!</h1>
-    <p>Sua opinião é essencial para aprimorarmos nossos serviços.</p>
-    <img src="logo.PNG" alt="Integral Trust Serviços" class="logo">
+    <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços.</p>
+    <img src="logo.PNG" alt="Integral Trust Serviços" class="logo" />
 
     <div class="feedback">
       <ul>
@@ -87,17 +54,6 @@
       <textarea id="comentarioExtra" placeholder="Escreva seu comentário..."></textarea>
       <button id="btnEnviarComentario">Enviar comentário</button>
     </div>
-
-    <footer>© 2025 <a href="https://integraltrust.com.br">Integral Trust Serviços</a></footer>
-
-    <!-- Formulário invisível para envio direto -->
-    <form id="formEnvio" action="https://script.google.com/macros/s/AKfycbwvHuF0F1CAUAxKjBGpkIcHVZ1HkJzOAwN4AF456_a0ZRSaiABMXCUgxibcEhSec2D7/exec" method="post" target="iframeEnvio">
-      <input type="hidden" name="Chamado" id="formChamado">
-      <input type="hidden" name="CSAT" id="formCSAT">
-      <input type="hidden" name="Motivo" id="formMotivo">
-      <input type="hidden" name="Comentario" id="formComentario">
-    </form>
-    <iframe name="iframeEnvio" style="display:none;"></iframe>
   </div>
 
   <script>
@@ -107,33 +63,47 @@
       const chamado = params.get("Chamado") || "-";
       const csat = params.get("CSAT") || "-";
       const motivo = params.get("Motivo") || "";
-      
+
       document.getElementById("retorno-chamado").textContent = chamado;
       document.getElementById("retorno-nota").textContent = csat;
 
-      const form = document.getElementById("formEnvio");
-      const fChamado = document.getElementById("formChamado");
-      const fCSAT = document.getElementById("formCSAT");
-      const fMotivo = document.getElementById("formMotivo");
-      const fComentario = document.getElementById("formComentario");
+      // URL do Web App
+      const urlWebApp = "https://script.google.com/macros/s/AKfycbyPDrocs97Un5qdG37ofA6SNHLQIUw1s3LMbd9FGS7iC1E5i3ma7DeStrVhClhdGjXZ/exec";
 
-      // Preenche o formulário invisível e envia automaticamente (sem comentário)
-      fChamado.value = chamado;
-      fCSAT.value = csat;
-      fMotivo.value = motivo;
-      fComentario.value = "";
-      form.submit();
+      // Função para enviar dados
+      function enviarDados(comentario) {
+        const payload = new URLSearchParams({
+          Chamado: chamado,
+          CSAT: csat,
+          Motivo: motivo,
+          Comentario: comentario || ""
+        });
+
+        fetch(urlWebApp, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: payload
+        })
+        .then(response => response.text())
+        .then(data => console.log("Dados enviados:", data))
+        .catch(err => console.error("Erro ao enviar dados:", err));
+      }
+
+      // Envia nota inicial sem comentário extra
+      enviarDados("");
 
       // Botão de comentário extra
       document.getElementById("btnEnviarComentario").addEventListener("click", () => {
         const comentarioExtra = document.getElementById("comentarioExtra").value.trim();
-        if (!comentarioExtra) { alert("Digite algum comentário antes de enviar!"); return; }
-
-        fComentario.value = comentarioExtra;
-        form.submit();
+        if (!comentarioExtra) {
+          alert("Digite algum comentário antes de enviar!");
+          return;
+        }
+        enviarDados(comentarioExtra);
         alert("Comentário enviado com sucesso!");
         document.getElementById("comentarioExtra").value = "";
       });
+
     })();
   </script>
 </body>
