@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: "Segoe UI", Arial, sans-serif;
-      background-color: #f4f6fa;
+      background-color: #f5f8fb;
       color: #333;
       display: flex;
       justify-content: center;
@@ -16,36 +16,109 @@
       margin: 0;
       text-align: center;
     }
+
     .card {
-      background: white;
-      padding: 36px 44px;
-      border-radius: 14px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      max-width: 460px;
+      background: #fff;
+      padding: 40px 48px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 480px;
+      width: 90%;
       text-align: center;
+      animation: fadeIn 1s ease-in-out;
     }
-    h1 { color: #004aad; font-size: 1.7rem; margin-bottom: 8px; }
-    p { font-size: 0.95rem; color: #004aad; margin-bottom: 20px; }
-    .logo { width: 140px; margin-top: 10px; }
-    .feedback { text-align: left; margin-top: 18px; font-size: 0.92rem; color: #004aad; }
-    .feedback ul { padding-left: 18px; margin: 0; }
-    .comentario-extra { margin-top: 18px; text-align: left; color: #004aad; }
-    .comentario-extra label { font-size: 0.9rem; font-weight: 500; }
-    .comentario-extra textarea { width: 100%; min-height: 45px; padding: 6px 8px; margin-top: 6px; font-size: 0.9rem; border: 1px solid #ccd6eb; border-radius: 6px; }
-    .comentario-extra button { margin-top: 10px; width: 100%; padding: 9px; background-color: #004aad; color: white; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; }
-    .comentario-extra button:hover { background-color: #00327a; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 { color: #004aad; font-size: 1.8rem; margin-bottom: 10px; }
+    p { font-size: 1rem; color: #004aad; margin-bottom: 25px; }
+
+    .logo {
+      width: 170px;
+      margin: 20px auto;
+    }
+
+    .feedback {
+      text-align: left;
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: #004aad;
+      border-top: 1px solid #e0e7f1;
+      padding-top: 12px;
+    }
+
+    .feedback ul { padding-left: 20px; margin: 0; }
+
+    .comentario-extra {
+      margin-top: 20px;
+      text-align: left;
+      color: #004aad;
+    }
+
+    .comentario-extra label {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .comentario-extra textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 8px 10px;
+      margin-top: 8px;
+      font-size: 0.95rem;
+      border: 1px solid #ccd6eb;
+      border-radius: 6px;
+      resize: none;
+    }
+
+    .comentario-extra button {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px;
+      background-color: #004aad;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+    }
+
+    .comentario-extra button:hover {
+      background-color: #00327a;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #666;
+      border-top: 1px solid #e0e7f1;
+      padding-top: 12px;
+    }
+
+    footer a {
+      color: #004aad;
+      text-decoration: none;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Obrigado pela sua avaliação!</h1>
     <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços.</p>
-    <img src="logo.PNG" alt="Integral Trust Serviços" class="logo" />
+
+    <img src="https://integraltrust.com.br/assets/img/integral-trust-servicos.png" alt="Integral Trust Serviços" class="logo" />
 
     <div class="feedback">
       <ul>
-        <li><strong>Chamado:</strong> <span id="retorno-chamado"></span></li>
-        <li><strong>CSAT:</strong> <span id="retorno-nota"></span></li>
+        <li><strong>Chamado:</strong> <span id="retorno-chamado">-</span></li>
+        <li><strong>CSAT:</strong> <span id="retorno-nota">-</span></li>
+        <li><strong>Motivo:</strong> <span id="retorno-motivo">-</span></li>
       </ul>
     </div>
 
@@ -54,56 +127,71 @@
       <textarea id="comentarioExtra" placeholder="Escreva seu comentário..."></textarea>
       <button id="btnEnviarComentario">Enviar comentário</button>
     </div>
+
+    <footer>
+      © 2025 <a href="https://integraltrust.com.br" target="_blank">Integral Trust Serviços</a><br>
+      📧 <a href="mailto:cs@integraltrust.com.br">cs@integraltrust.com.br</a>
+    </footer>
   </div>
 
   <script>
     (function() {
-      // Captura parâmetros da URL
+      // 🔹 Captura parâmetros da URL
       const params = new URLSearchParams(window.location.search);
       const chamado = params.get("Chamado") || "-";
       const csat = params.get("CSAT") || "-";
-      const motivo = params.get("Motivo") || "";
+      const motivo = params.get("Motivo") || "-";
+      const cliente = params.get("Cliente") || ""; // opcional, se quiser capturar quem respondeu
 
       document.getElementById("retorno-chamado").textContent = chamado;
       document.getElementById("retorno-nota").textContent = csat;
+      document.getElementById("retorno-motivo").textContent = motivo;
 
-      // URL do Web App
+      // 🔹 URL do Web App
       const urlWebApp = "https://script.google.com/macros/s/AKfycbyPDrocs97Un5qdG37ofA6SNHLQIUw1s3LMbd9FGS7iC1E5i3ma7DeStrVhClhdGjXZ/exec";
 
-      // Função para enviar dados
-      function enviarDados(comentario) {
-        const payload = new URLSearchParams({
+      // 🔹 Envia apenas uma vez os dados principais (sem comentário)
+      fetch(urlWebApp, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
           Chamado: chamado,
           CSAT: csat,
           Motivo: motivo,
-          Comentario: comentario || ""
-        });
+          Cliente: cliente,
+          Comentario: ""
+        })
+      })
+      .then(r => r.text())
+      .then(console.log)
+      .catch(err => console.error("Erro ao enviar nota:", err));
+
+      // 🔹 Envio do comentário adicional
+      document.getElementById("btnEnviarComentario").addEventListener("click", () => {
+        const comentario = document.getElementById("comentarioExtra").value.trim();
+        if (!comentario) {
+          alert("Digite algum comentário antes de enviar!");
+          return;
+        }
 
         fetch(urlWebApp, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: payload
+          body: new URLSearchParams({
+            Chamado: chamado,
+            CSAT: csat,
+            Motivo: motivo,
+            Cliente: cliente,
+            Comentario: comentario
+          })
         })
-        .then(response => response.text())
-        .then(data => console.log("Dados enviados:", data))
-        .catch(err => console.error("Erro ao enviar dados:", err));
-      }
-
-      // Envia nota inicial sem comentário extra
-      enviarDados("");
-
-      // Botão de comentário extra
-      document.getElementById("btnEnviarComentario").addEventListener("click", () => {
-        const comentarioExtra = document.getElementById("comentarioExtra").value.trim();
-        if (!comentarioExtra) {
-          alert("Digite algum comentário antes de enviar!");
-          return;
-        }
-        enviarDados(comentarioExtra);
-        alert("Comentário enviado com sucesso!");
-        document.getElementById("comentarioExtra").value = "";
+        .then(r => r.text())
+        .then(() => {
+          alert("✅ Comentário enviado com sucesso!");
+          document.getElementById("comentarioExtra").value = "";
+        })
+        .catch(err => alert("Erro ao enviar comentário: " + err.message));
       });
-
     })();
   </script>
 </body>
