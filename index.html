@@ -15,71 +15,72 @@
       height: 100vh;
       margin: 0;
       text-align: center;
+      font-size: 0.9rem; /* menor tamanho geral */
     }
     .card {
       background: white;
-      padding: 28px 36px;
-      border-radius: 14px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      max-width: 440px;
+      padding: 24px 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+      max-width: 420px;
       width: 90%;
     }
     header {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     header img {
-      width: 160px;
+      width: 150px;
       height: auto;
     }
     h1 {
       color: #004aad;
-      font-size: 1.6rem;
-      margin-bottom: 6px;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
     }
     p {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: #004aad;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .feedback {
       text-align: left;
-      margin-top: 10px;
-      font-size: 0.92rem;
+      margin-top: 8px;
+      font-size: 0.85rem;
       color: #004aad;
     }
     .feedback ul {
-      padding-left: 18px;
+      padding-left: 16px;
       margin: 0;
     }
     .comentario-extra {
-      margin-top: 16px;
+      margin-top: 12px;
       text-align: left;
       color: #004aad;
     }
     .comentario-extra label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 500;
     }
     .comentario-extra textarea {
       width: 100%;
-      min-height: 45px;
-      padding: 6px 8px;
-      margin-top: 6px;
-      font-size: 0.9rem;
+      min-height: 40px;
+      padding: 5px 7px;
+      margin-top: 4px;
+      font-size: 0.85rem;
       border: 1px solid #ccd6eb;
       border-radius: 6px;
       resize: vertical;
     }
     .comentario-extra button {
-      margin-top: 10px;
+      margin-top: 8px;
       width: 100%;
-      padding: 9px;
+      padding: 8px;
       background-color: #004aad;
       color: white;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
@@ -89,13 +90,17 @@
       background-color: #00327a;
     }
     footer {
-      margin-top: 20px;
-      font-size: 0.8rem;
+      margin-top: 16px;
+      font-size: 0.75rem;
       color: #004aad;
+    }
+    footer a {
+      color: #004aad;
+      text-decoration: none;
     }
     footer span {
       display: inline-block;
-      margin: 0 5px;
+      margin: 0 4px;
     }
   </style>
 </head>
@@ -105,7 +110,7 @@
       <img src="https://integraltrust.com.br/assets/img/integral-trust-servicos.png" alt="Integral Trust Serviços" />
     </header>
 
-    <h1>Obrigado pela sua avaliação!</h1>
+    <h1>💙 Obrigado pela sua avaliação!</h1>
     <p>Sua opinião é essencial para aprimorarmos continuamente nossos serviços.</p>
 
     <div class="feedback">
@@ -116,19 +121,22 @@
     </div>
 
     <div class="comentario-extra">
-      <label for="comentarioExtra">Comentário adicional (opcional):</label>
+      <label for="comentarioExtra">👇 Deixe seu Comentário (opcional):</label>
       <textarea id="comentarioExtra" placeholder="Escreva seu comentário..."></textarea>
       <button id="btnEnviarComentario">Enviar comentário</button>
     </div>
 
     <footer>
-      © 2025 Integral Trust Serviços <span>|</span> 📧 cs@integraltrust.com.br
+      © 2025 Integral Trust Serviços 
+      <span>|</span> 
+      <a href="mailto:cs@integraltrust.com.br">📧 cs@integraltrust.com.br</a>
+      <span>|</span>
+      <a href="https://integraltrust.com.br" target="_blank">https://integraltrust.com.br</a>
     </footer>
   </div>
 
   <script>
     (function() {
-      // Captura parâmetros da URL
       const params = new URLSearchParams(window.location.search);
       const chamado = params.get("Chamado") || "-";
       const csat = params.get("CSAT") || "-";
@@ -137,10 +145,8 @@
       document.getElementById("retorno-chamado").textContent = chamado;
       document.getElementById("retorno-nota").textContent = csat;
 
-      // URL do Web App
       const urlWebApp = "https://script.google.com/macros/s/AKfycbyPDrocs97Un5qdG37ofA6SNHLQIUw1s3LMbd9FGS7iC1E5i3ma7DeStrVhClhdGjXZ/exec";
 
-      // Função para enviar dados
       function enviarDados(comentario) {
         const payload = new URLSearchParams({
           Chamado: chamado,
@@ -159,10 +165,8 @@
         .catch(err => console.error("Erro ao enviar dados:", err));
       }
 
-      // Envia nota inicial sem comentário
       enviarDados("");
 
-      // Envia comentário adicional
       document.getElementById("btnEnviarComentario").addEventListener("click", () => {
         const comentarioExtra = document.getElementById("comentarioExtra").value.trim();
         if (!comentarioExtra) {
@@ -173,7 +177,6 @@
         alert("Comentário enviado com sucesso!");
         document.getElementById("comentarioExtra").value = "";
       });
-
     })();
   </script>
 </body>
